@@ -1,19 +1,13 @@
 #!/bin/bash
 cd openwrt
 
-
-# Add luci-app-adguardhome
-git clone https://github.com/rufengsuixing/luci-app-adguardhome.git package-temp/luci-app-adguardhome
-mv -f package-temp/luci-app-adguardhome package/lean/
-rm -rf package-temp
-
-# Add luci-app-amlogic
-git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogi
-mv -f package-temp/luci-app-amlogic/luci-app-amlogic package/lean/
-rm -rf package-temp
+echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
 
 # 设置密码为空
 sed -i '/CYXluq4wUazHjmCDBCqXF/d' package/lean/default-settings/files/zzz-default-settings
+
+# ttyd自动登录
+sed -i "s?/bin/login?/usr/libexec/login.sh?g" feeds/packages/utils/ttyd/files/ttyd.config
 
 # 添加主题
 rm -rf feeds/luci/themes/luci-theme-argon
@@ -24,19 +18,15 @@ git clone https://github.com/jerrykuku/luci-app-argon-config.git package/luci-ap
 # 更改 Argon 主题背景
 cp -f $GITHUB_WORKSPACE/images/bg1.jpg package/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg
 
-# 取消主题默认设置
-find package/luci-theme-*/* -type f -name '*luci-theme-*' -print -exec sed -i '/set luci.main.mediaurlbase/d' {} \;
-
-# 流量监控
-git clone https://github.com/haiibo/luci-app-wrtbwmon package/luci-app-wrtbwmon
-
-# 在线用户
-git_sparse_clone main https://github.com/haiibo/packages luci-app-onliner
-sed -i '$i uci set nlbwmon.@nlbwmon[0].refresh_interval=2s' package/lean/default-settings/files/zzz-default-settings
-sed -i '$i uci commit nlbwmon' package/lean/default-settings/files/zzz-default-settings
+# 取消默认主题
+sed -i '/set luci.main.mediaurlbase=\/luci-static\/bootstrap/d' feeds/luci/themes/luci-theme-bootstrap/root/etc/uci-defaults/30_luci-theme-bootstrap
 
 # Modify default theme（FROM uci-theme-bootstrap CHANGE TO luci-theme-material）
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' ./feeds/luci/collections/luci/Makefile
+
+
+# 流量监控
+git clone https://github.com/haiibo/luci-app-wrtbwmon package/luci-app-wrtbwmon
 
 # Modify some code adaptation
 #sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' feeds/luci/applications/luci-app-cpufreq/Makefile
@@ -53,9 +43,23 @@ sed -i 's/192.168.1.1/192.168.31.31/g' package/base-files/files/bin/config_gener
 # 修改系统主机名（FROM OpenWrt CHANGE TO OpenWrt-N1）
 sed -i 's/OpenWrt/OpenWrt-N1/g' package/base-files/files/bin/config_generate
 
-# DDNS.to
-git_sparse_clone main https://github.com/linkease/nas-packages-luci luci/luci-app-ddnsto
-git_sparse_clone master https://github.com/linkease/nas-packages network/services/ddnsto
+# Add luci-app-adguardhome
+git clone https://github.com/rufengsuixing/luci-app-adguardhome.git package-temp/luci-app-adguardhome
+mv -f package-temp/luci-app-adguardhome package/lean/
+rm -rf package-temp
+
+# Add luci-app-amlogic
+git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogi
+mv -f package-temp/luci-app-amlogic/luci-app-amlogic package/lean/
+rm -rf package-temp
+
+# 添加插件aliddns
+git clone --depth=1 https://github.com/honwen/luci-app-aliddns package/luci-app-aliddns
+
+# 添加插件Alist
+svn export https://github.com/sbwml/luci-app-alist/trunk/luci-app-alist package/luci-app-alist
+svn export https://github.com/sbwml/luci-app-alist/trunk/alist package/alist
+
 
 # 替换默认软件源
 # sed -i 's#openwrt.proxy.ustclug.org#mirrors.bfsu.edu.cn\\/openwrt#' package/lean/default-settings/files/zzz-default-settings
@@ -73,8 +77,9 @@ git clone https://github.com/sbwml/packages_lang_golang feeds/packages/lang/gola
 # 修复 hostapd 报错
 cp -f $GITHUB_WORKSPACE/script/011-fix-mbo-modules-build.patch package/network/services/hostapd/patches/011-fix-mbo-modules-build.patch
 
-
 # 修改插件名字
 sed -i 's/"Argon 主题设置"/"主题设置"/g' `grep "Argon 主题设置" -rl ./`
 sed -i 's/"带宽监控"/"带宽"/g' `grep "带宽监控" -rl ./`
 sed -i 's/"TTYD 终端"/"终端"/g' `grep "TTYD 终端" -rl ./`
+sed -i 's/"Alist 文件列表"/"Alist"/g' `grep "Alist 文件列表" -rl ./`
+sed -i 's/"Aria2 配置"/"Aria2"/g' `grep "Aria2 配置" -rl ./`
