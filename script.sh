@@ -1,7 +1,8 @@
 #!/bin/bash
 cd openwrt
 
-echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
+# 科学上网插件
+git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
 
 # 设置密码为空
 sed -i '/CYXluq4wUazHjmCDBCqXF/d' package/lean/default-settings/files/zzz-default-settings
@@ -56,9 +57,13 @@ rm -rf package-temp
 # 添加插件aliddns
 git clone --depth=1 https://github.com/honwen/luci-app-aliddns package/luci-app-aliddns
 
+## DDNSGO 
+git clone --depth 1 https://github.com/sirpdboy/luci-app-ddns-go package/new/ddnsgo
+mv -n package/new/ddnsgo/*ddns-go package/new/
+rm -rf package/new/ddnsgo
+
 # 添加插件Alist
-svn export https://github.com/sbwml/luci-app-alist/trunk/luci-app-alist package/luci-app-alist
-svn export https://github.com/sbwml/luci-app-alist/trunk/alist package/alist
+git clone https://github.com/sbwml/luci-app-alist.git package/luci-app-alist
 
 
 # 替换默认软件源
