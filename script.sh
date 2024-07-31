@@ -1,8 +1,4 @@
 #!/bin/bash
-cd openwrt
-
-# 科学上网插件
-git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
 
 # 设置密码为空
 sed -i '/CYXluq4wUazHjmCDBCqXF/d' package/lean/default-settings/files/zzz-default-settings
@@ -43,6 +39,11 @@ sed -i 's/192.168.1.1/192.168.31.31/g' package/base-files/files/bin/config_gener
 # 修改系统主机名（FROM OpenWrt CHANGE TO OpenWrt-N1）
 sed -i 's/OpenWrt/OpenWrt-N1/g' package/base-files/files/bin/config_generate
 
+#科学上网依赖
+git clone https://github.com/kenzok8/small.git package/small
+# 科学上网插件
+git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
+
 # Add luci-app-adguardhome
 git clone https://github.com/rufengsuixing/luci-app-adguardhome.git package-temp/luci-app-adguardhome
 mv -f package-temp/luci-app-adguardhome package/lean/
@@ -51,9 +52,12 @@ rm -rf package-temp
 # Add luci-app-amlogic
 git clone https://github.com/ophub/luci-app-amlogic.git package/luci-app-amlogi
 mv -f package-temp/luci-app-amlogic/luci-app-amlogic package/lean/
-rm -rf package-temp
+rm -rf package-
 
-# 添加插件aliddns
+#阿里云DDNS
+git clone https://github.com/honwen/luci-app-aliddns.git package/luci-app-aliddns
+
+# 添加插件alist
 rm -rf feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 22.x feeds/packages/lang/golang
 git clone https://github.com/sbwml/luci-app-alist package/alist
@@ -64,23 +68,19 @@ mv -n package/new/ddnsgo/*ddns-go package/new/
 rm -rf package/new/ddnsgo
 
 # 替换默认软件源
-# sed -i 's#openwrt.proxy.ustclug.org#mirrors.bfsu.edu.cn\\/openwrt#' package/lean/default-settings/files/zzz-default-settings
-
+sed -i 's#openwrt.proxy.ustclug.org#mirrors.bfsu.edu.cn\\/openwrt#' package/lean/default-settings/files/zzz-default-settings
 sed -i 's/invalid users = root/#invalid users = root/g' feeds/packages/net/samba4/files/smb.conf.template
 
 # 修复部分插件自启动脚本丢失可执行权限问题
 sed -i '/exit 0/i\chmod +x /etc/init.d/*' package/lean/default-settings/files/zzz-default-settings
 
-
 # 修复 hostapd 报错
 cp -f $GITHUB_WORKSPACE/script/011-fix-mbo-modules-build.patch package/network/services/hostapd/patches/011-fix-mbo-modules-build.patch
 
 # 修改插件名字
-sed -i 's/"Argon 主题设置"/"主题设置"/g' `grep "Argon 主题设置" -rl ./`
 sed -i 's/"带宽监控"/"带宽"/g' `grep "带宽监控" -rl ./`
 sed -i 's/"TTYD 终端"/"终端"/g' `grep "TTYD 终端" -rl ./`
 sed -i 's/"Alist 文件列表"/"Alist"/g' `grep "Alist 文件列表" -rl ./`
 sed -i 's/"Aria2 配置"/"Aria2"/g' `grep "Aria2 配置" -rl ./`
+sed -i 's/"Argon 主题设置"/"主题设置"/g' `grep "Argon 主题设置" -rl ./`
 
-./scripts/feeds update -a
-./scripts/feeds install -a
