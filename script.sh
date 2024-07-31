@@ -55,7 +55,9 @@ mv -f package-temp/luci-app-amlogic/luci-app-amlogic package/lean/
 rm -rf package-temp
 
 # 添加插件aliddns
-git clone --depth=1 https://github.com/honwen/luci-app-aliddns package/luci-app-aliddns
+rm -rf feeds/packages/lang/golang
+git clone https://github.com/sbwml/packages_lang_golang -b 22.x feeds/packages/lang/golang
+git clone https://github.com/sbwml/luci-app-alist package/alist
 
 ## DDNSGO 
 git clone --depth 1 https://github.com/sirpdboy/luci-app-ddns-go package/new/ddnsgo
