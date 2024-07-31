@@ -65,6 +65,8 @@ mv -n package/new/ddnsgo/*ddns-go package/new/
 rm -rf package/new/ddnsgo
 
 # 添加插件Alist
+rm -rf feeds/packages/lang/golang
+svn export https://github.com/sbwml/packages_lang_golang/branches/19.x feeds/packages/lang/golang
 git clone https://github.com/sbwml/luci-app-alist.git package/luci-app-alist
 
 
@@ -76,9 +78,6 @@ sed -i 's/invalid users = root/#invalid users = root/g' feeds/packages/net/samba
 # 修复部分插件自启动脚本丢失可执行权限问题
 sed -i '/exit 0/i\chmod +x /etc/init.d/*' package/lean/default-settings/files/zzz-default-settings
 
-# golang版本修复
-rm -rf feeds/packages/lang/golang
-git clone https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
 
 # 修复 hostapd 报错
 cp -f $GITHUB_WORKSPACE/script/011-fix-mbo-modules-build.patch package/network/services/hostapd/patches/011-fix-mbo-modules-build.patch
