@@ -1,10 +1,14 @@
 #!/bin/bash
 cd openwrt
 cat >> .config <<EOF
+#
+# Automatically generated file; DO NOT EDIT.
+# OpenWrt Configuration
+#
 # Target Config
 CONFIG_TARGET_armvirt=y
 CONFIG_TARGET_armvirt_64=y
-CONFIG_TARGET_armvirt_64_Default=y
+CONFIG_TARGET_armvirt_64_DEVICE_generic=y
 
 # Firmware Type
 # CONFIG_TARGET_IMAGES_GZIP is not set
@@ -12,6 +16,8 @@ CONFIG_TARGET_armvirt_64_Default=y
 # CONFIG_TARGET_ROOTFS_EXT4FS is not set
 # CONFIG_TARGET_ROOTFS_INITRAMFS is not set
 # CONFIG_TARGET_ROOTFS_SQUASHFS is not set
+
+# CONFIG_DEFAULT_luci-app-turboacc is not set
 
 # Basic Dependence
 CONFIG_PACKAGE_perl=y
@@ -56,11 +62,25 @@ CONFIG_PACKAGE_wpa-cli=y
 CONFIG_PACKAGE_wpad-basic=y
 CONFIG_PACKAGE_iw=y
 CONFIG_PACKAGE_ntfs3-mount=y
+CONFIG_PACKAGE_coreutils=y
+CONFIG_PACKAGE_coreutils-base64=y
+CONFIG_PACKAGE_coreutils-nohup=y
+CONFIG_PACKAGE_jq=y
+CONFIG_PACKAGE_pv=y
+CONFIG_PACKAGE_hd-idle=y
 
-# Applications
+# Luci
 # CONFIG_PACKAGE_luci-app-accesscontrol is not set
+CONFIG_PACKAGE_luci-app-bypass=y
+CONFIG_PACKAGE_luci-app-bypass_INCLUDE_Shadowsocks_Libev_Client=y
+CONFIG_PACKAGE_luci-app-bypass_INCLUDE_Shadowsocks_Libev_Server=y
+CONFIG_PACKAGE_luci-app-bypass_INCLUDE_ShadowsocksR_Libev_Client=y
+CONFIG_PACKAGE_luci-app-bypass_INCLUDE_ShadowsocksR_Libev_Server=y
+CONFIG_PACKAGE_luci-app-bypass_INCLUDE_Simple_Obfs=y
 CONFIG_PACKAGE_luci-app-adguardhome=y
 CONFIG_PACKAGE_luci-app-amlogic=y
+CONFIG_PACKAGE_luci-app-argonne-config=y
+CONFIG_PACKAGE_luci-app-arpbind=y
 CONFIG_PACKAGE_luci-app-autoreboot=y
 CONFIG_PACKAGE_luci-app-aliddns=y
 # CONFIG_PACKAGE_luci-app-alist is not set
@@ -79,7 +99,20 @@ CONFIG_PACKAGE_luci-app-nlbwmon=y
 CONFIG_PACKAGE_luci-app-ttyd=y
 CONFIG_PACKAGE_luci-app-uhttpd=y
 CONFIG_PACKAGE_luci-app-smartdns=y
+CONFIG_PACKAGE_luci-app-samba4=y
+CONFIG_PACKAGE_luci-app-serverchan=y
 CONFIG_PACKAGE_luci-app-onliner=y
+CONFIG_PACKAGE_luci-app-passwall=y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Brook=y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ChinaDNS_NG=y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Hysteria=y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_NaiveProxy=y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ShadowsocksR_Libev_Server=y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Server=y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan_GO=y
+CONFIG_PACKAGE_luci-app-passwall_Iptables_Transparent_Proxy=y
+CONFIG_PACKAGE_luci-app-pushbot=y
+CONFIG_PACKAGE_luci-app-smartdns=y
 CONFIG_PACKAGE_luci-app-ssr-plus=y
 CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Hysteria=y
 CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_IPT2Socks=y
@@ -88,11 +121,17 @@ CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_NaiveProxy=y
 CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Redsocks2=y
 CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Libev_Server=y
 CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Trojan=y
+# CONFIG_PACKAGE_luci-app-turboacc is not set
+# CONFIG_PACKAGE_luci-app-turboacc_INCLUDE_OFFLOADING is not set
+# CONFIG_PACKAGE_luci-app-unblockmusic is not set
+# CONFIG_PACKAGE_luci-app-upnp is not set
+# CONFIG_PACKAGE_luci-app-vsftpd is not set
+# CONFIG_PACKAGE_luci-app-socat is not set
 CONFIG_PACKAGE_luci-app-zerotier=y
 
 # Themes
-CONFIG_PACKAGE_luci-theme-argon=y
-CONFIG_PACKAGE_luci-app-argon-config=y
+CONFIG_PACKAGE_luci-theme-argonne=y
+
 
 # Software
 CONFIG_PACKAGE_ddns-scripts_cloudflare.com-v4=y
@@ -101,7 +140,12 @@ CONFIG_PACKAGE_htop=y
 CONFIG_PACKAGE_iperf3=y
 CONFIG_PACKAGE_nano-plus=y
 CONFIG_PACKAGE_openssh-sftp-server=y
+CONFIG_PACKAGE_vim-fuller=y
 CONFIG_PACKAGE_zsh=y
+CONFIG_PACKAGE_smartdns=y
+CONFIG_PACKAGE_smartmontools=y
+CONFIG_PACKAGE_samba4-libs=y
+CONFIG_PACKAGE_samba4-server=y
 
 # H68K AX Mode Support
 CONFIG_DRIVER_11AX_SUPPORT=y
@@ -116,19 +160,8 @@ CONFIG_PACKAGE_kmod-shortcut-fe-cm=y
 
 # Ipv6 Support
 CONFIG_PACKAGE_6in4=y
-CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
 CONFIG_PACKAGE_ipv6helper=y
 CONFIG_PACKAGE_ip6tables=y
 CONFIG_PACKAGE_ip6tables-extra=y
 CONFIG_PACKAGE_ip6tables-mod-nat=y
-
-# remove wifi
-CONFIG_PACKAGE_hostapd-common=n
-CONFIG_PACKAGE_iw=n
-CONFIG_PACKAGE_kmod-brcmfmac=n
-CONFIG_PACKAGE_kmod-brcmutil=n
-CONFIG_PACKAGE_kmod-cfg80211=n
-CONFIG_PACKAGE_kmod-mac80211=n
-CONFIG_PACKAGE_wpa-cli=n
-CONFIG_PACKAGE_wpad-basic=n
 EOF
