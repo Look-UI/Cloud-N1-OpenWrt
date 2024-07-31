@@ -63,7 +63,7 @@ CONFIG_PACKAGE_luci-app-adguardhome=y
 CONFIG_PACKAGE_luci-app-amlogic=y
 CONFIG_PACKAGE_luci-app-autoreboot=y
 CONFIG_PACKAGE_luci-app-aliddns=y
-CONFIG_PACKAGE_luci-app-alist=y
+# CONFIG_PACKAGE_luci-app-alist is not set
 CONFIG_PACKAGE_luci-app-aria2=y
 CONFIG_PACKAGE_luci-app-diskman=y
 CONFIG_PACKAGE_luci-app-dockerman=y
