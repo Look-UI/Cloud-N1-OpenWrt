@@ -1,4 +1,5 @@
 #!/bin/bash
+cd openwrt
 
 # 设置密码为空
 sed -i '/CYXluq4wUazHjmCDBCqXF/d' package/lean/default-settings/files/zzz-default-settings
